@@ -1,0 +1,52 @@
+# Tell assembler to not insert instructions to fill branch delay slots.
+# This is necessary when branch delay slots are disabled.
+.set noreorder
+.set noat
+
+.global_start
+_start:		ADDI 	$20,$0, 0		#in
+
+HYST:		ADDI	$1, $0, 5		#Const low_limit
+		ADDI	$2, $0, 25		#Const high_limit
+		ADDI	$3, $0, 40		#Const out_high
+		ADDI	$4, $0, 0		#Const out_low
+		ADDI	$5, $0, $4		#old_out = out_low
+		ADDI	$6, $0, $4		#out = out_low
+		
+		SUB	$7, $20,$2		#in - high_limit
+		SUB	$8, $1, $20		#low_limit - in
+
+		BGEZ	$7, HIGH1		#if in - high_limit > 0
+		BGEZ	$8, LOW1		#if low_limit - in > 0
+		J	DONE
+
+HIGH1:		
+		BEQ	$5, $4, HIGH2		#if old_out == out_low, jmp High2
+		J	DONE
+		
+HIGH2:
+		ADD	$6, $3, $0		#out = out_high + 0
+		J	DONE
+		
+LOW1:		
+		BEQ	$5, $3, LOW2		#if old_out == outhigh, jmp High2
+		J	DONE
+LOW2
+		ADD	$6, $4, $0		#out = out_low + 0
+		J	DONE
+
+DONE:
+		ADD	$5, $6, $0		#old_out = out + 0
+		NOP
+
+
+
+
+
+
+
+
+SUB	$9, $4 ,$5		#out_low - old_out
+SUB	$10,$3 ,$5		#old_high - old_out
+
+	

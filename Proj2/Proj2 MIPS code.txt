@@ -1,0 +1,14 @@
+# Tell assembler to not insert instructions to fill branch delay slots.
+# This is necessary when branch delay slots are disabled.
+.set noreorder
+.set noat
+
+.global_start
+_start:	ADDI 	$10, $0, 0		#Global int old_w
+
+
+HPF:		SRA		$12, $10, 1	#R12 = w_old / 2
+		ADD		$13, $6, $12	#R13 = w, w = R6 (input) + R12 (old_w / 2)
+		SUB		$9, $13, $10	#R9 = output, output = w - w_old
+		# w_old = w;
+  		ADD $10,$13,$0  # 

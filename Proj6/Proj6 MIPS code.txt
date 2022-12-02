@@ -1,0 +1,36 @@
+# Tell assembler to not insert instructions to fill branch delay slots.
+# This is necessary when branch delay slots are disabled.
+.set noreorder
+
+.global_start
+_start:		
+  
+CDT:	ADDI	$1, $0, 0	#int pulse = 0
+	ADDI	$2, $0, 0	#int enable = 0
+	ADDI	$3, $0, 0	#int timer = 0
+	ADDI	$10,$0, 0	#old_pulse
+	ADDI	$4, $0, 1	#number value 1
+	ADDI	$5, $0, 10	#number value 10
+	ADDI	$6, $0, 16000	#number value 16000
+	ADDI	$7, $0, 3	#number value 3
+	MUL	$8, $7, $6	#$8 = 3 * 16000
+	ADD	$8, $8, $4	#$8 = $8 + 1s
+	BLEZ	$2, 0,	B1	#if enable > 0 branch B1
+	J	DONE
+
+B1:
+	BLT	$10,$5, B2	#if old_pulse < 10 branch B2
+	SUB	$3, $3, $4	#timer = timer - 1
+	J	DONE
+	
+B2:	
+	BGT	$1, $5, B3	#if pulse > 10
+	J 	DONE
+
+B3:	
+	ADD	$3, $3, $8	# Timer = $8 content
+	J	DONE
+
+DONE:
+	ADD	$10, $1, $0	#old_pulse = pulse.
+	NOP	

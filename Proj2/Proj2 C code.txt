@@ -1,0 +1,8 @@
+int hpf(int in)
+{
+    static int w_old = 0;
+    int w = in + 0.5 * w_old;
+    int out = w - w_old;
+    w_old = w;
+    return out;
+}

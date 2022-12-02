@@ -1,0 +1,36 @@
+{
+	static int in_old = 0;
+
+	if (in_old == 0)
+		if (in > 10)
+			cnt = cnt + 1;
+	if (cnt > 1)
+		en = 1;
+
+	in_old = in;
+	// write counter code here
+
+	return 0;
+
+}
+
+int cdt(int pulse, int enable, int& timer)
+{
+	static int old_pulse = 0;
+
+
+	if (enable > 0)
+	{
+		if (old_pulse < 10)
+		{
+			if (pulse > 10)
+				timer = 3 * 16000 + 1;
+		}
+		timer = timer - 1;
+
+	}
+
+	old_pulse = pulse;
+	// write count down timer code here.
+	return 0;
+}

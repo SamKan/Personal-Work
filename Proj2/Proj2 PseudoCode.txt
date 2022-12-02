@@ -1,0 +1,8 @@
+START:	ADDI 	R1, R0, 0		#Global int old_w
+
+
+HPF:	ADDI 	R2, R0, 0		#int in
+	SRLMIPS R3, R1, 0		#R3 = R1/2
+	ADD 	R4, R2, R3		#R4 = w, w = in + w_old/2
+	SUB	R5, R4, R1		#R5 = out, out = w - w_old
+	ADDI 	R1, R4, 0

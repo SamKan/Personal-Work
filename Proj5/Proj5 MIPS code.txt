@@ -1,0 +1,38 @@
+# Tell assembler to not insert instructions to fill branch delay slots.
+# This is necessary when branch delay slots are disabled.
+.set noreorder
+.set noat
+
+.global_start
+_start:		
+  
+
+PCOUNT:	
+ 	ADDI	$1, $0, 0		#int in_old = 0
+	ADDI	$2, $0, 0		#int cnt
+	ADDI 	$3, $0, 0		#int en
+	ADDI	$4, $0, 0		#int in
+	ADDI	$5, $0, 1		#int = 1
+	ADDI	$10,$0, 10		#int = 10
+	BEQ	$1, $0, EQUAL		#if in_old = 0
+	BGT	$2, $5, GREAT		#if cnt > 1
+	J	DONE
+
+EQUAL:
+	BGT	$4, $10, EQUAL2
+	BGT	$2, $5, GREAT		#if cnt > 1
+	J	DONE
+
+EQUAL2:	
+	ADD	$2, $2, $5		#cnt = cnt + 1
+	BGT	$2, $5, GREAT		#if cnt > 1
+	J	DONE
+	
+GREAT:
+	ADD	$3, $0, $5
+	J	DONE	
+	
+
+DONE:
+	ADD	$1, $4, $0		#int in_old = in
+	NOP
