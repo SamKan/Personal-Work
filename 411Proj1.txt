@@ -1,0 +1,11 @@
+Assembly for abs_calc() for Proj1.c
+
+  mov  (rbp), eax      # (rbp) is memory for x on stack
+  sar  31, eax         # bitshift right: x >>> 31, eax now represents y
+  mov  eax, edx        #  
+  xor  (rbp), edx    # edx = x XOR y
+  mov  edx, (rbp)      # (rbp) is memory for output on stack
+  sub  eax, (rbp)      # (x XOR y) - y
+
+Note: I needed help on this section to find the proper way to express the assembly code; I am 
+only familiar with NASM from 313.
